@@ -1,5 +1,7 @@
 const BASE = process.env.NEXT_PUBLIC_API_URL || 'http://52.64.40.205:4003/api';
 
+console.log("base url is ", BASE);
+
 function getToken() {
   if (typeof window === 'undefined') return null;
   return localStorage.getItem('admin_token');
