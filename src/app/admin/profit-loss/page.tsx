@@ -76,12 +76,12 @@ export default function ProfitLossPage() {
               </div>
             </div>
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Salary (£)</label>
+              <label className="block text-xs text-gray-500 mb-1">Salary ($)</label>
               <input type="number" step="0.01" value={form.salary} onChange={e => setForm({ ...form, salary: e.target.value })}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#f69a39]" />
             </div>
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Rent (£)</label>
+              <label className="block text-xs text-gray-500 mb-1">Rent ($)</label>
               <input type="number" step="0.01" value={form.rent} onChange={e => setForm({ ...form, rent: e.target.value })}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#f69a39]" />
             </div>
@@ -104,27 +104,27 @@ export default function ProfitLossPage() {
               <div>
                 <div className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">Expenses</div>
                 <div className="space-y-1 text-sm">
-                  <div className="flex justify-between"><span className="text-gray-600">Salary</span><span>£{salary.toFixed(2)}</span></div>
-                  <div className="flex justify-between"><span className="text-gray-600">Rent</span><span>£{rent.toFixed(2)}</span></div>
-                  <div className="flex justify-between"><span className="text-gray-600">Repairs</span><span>£{repairs.toFixed(2)}</span></div>
-                  <div className="flex justify-between font-semibold border-t pt-1"><span>Total Expense</span><span className="text-red-600">£{totalExpense.toFixed(2)}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600">Salary</span><span>${salary.toFixed(2)}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600">Rent</span><span>${rent.toFixed(2)}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600">Repairs</span><span>${repairs.toFixed(2)}</span></div>
+                  <div className="flex justify-between font-semibold border-t pt-1"><span>Total Expense</span><span className="text-red-600">${totalExpense.toFixed(2)}</span></div>
                 </div>
               </div>
               <div>
                 <div className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">Profit</div>
                 <div className="space-y-1 text-sm">
-                  <div className="flex justify-between"><span className="text-gray-600">Sales Profit</span><span>£{salesProfit.toFixed(2)}</span></div>
-                  <div className="flex justify-between"><span className="text-gray-600">Repair Profit</span><span>£{serviceProfit.toFixed(2)}</span></div>
-                  <div className="flex justify-between font-semibold border-t pt-1"><span>Total Profit</span><span className="text-green-600">£{totalProfit.toFixed(2)}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600">Sales Profit</span><span>${salesProfit.toFixed(2)}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600">Repair Profit</span><span>${serviceProfit.toFixed(2)}</span></div>
+                  <div className="flex justify-between font-semibold border-t pt-1"><span>Total Profit</span><span className="text-green-600">${totalProfit.toFixed(2)}</span></div>
                 </div>
               </div>
               <div className="bg-[#1e1e21] rounded-lg p-3 text-white">
                 <div className="text-xs uppercase tracking-wide text-white/40 mb-2">Net Income</div>
-                <div className="flex justify-between text-sm"><span className="text-white/60">Profit</span><span>£{totalProfit.toFixed(2)}</span></div>
-                <div className="flex justify-between text-sm"><span className="text-white/60">Expenses</span><span>- £{totalExpense.toFixed(2)}</span></div>
+                <div className="flex justify-between text-sm"><span className="text-white/60">Profit</span><span>${totalProfit.toFixed(2)}</span></div>
+                <div className="flex justify-between text-sm"><span className="text-white/60">Expenses</span><span>- ${totalExpense.toFixed(2)}</span></div>
                 <div className="flex justify-between font-bold text-lg border-t border-white/20 pt-2 mt-2">
                   <span>TOTAL</span>
-                  <span className={netIncome >= 0 ? "text-[#f69a39]" : "text-red-400"}>£{netIncome.toFixed(2)}</span>
+                  <span className={netIncome >= 0 ? "text-[#f69a39]" : "text-red-400"}>${netIncome.toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -141,9 +141,9 @@ export default function ProfitLossPage() {
               <div key={r.id} className="border border-gray-100 rounded-lg p-3">
                 <div className="font-medium text-sm">{new Date(r.date).toLocaleDateString("en-GB", { month: "long", year: "numeric" })}</div>
                 <div className="grid grid-cols-2 gap-1 mt-2 text-xs text-gray-500">
-                  <span>Profit: <span className="text-green-600 font-medium">£{Number(r.total_profit_amount).toFixed(2)}</span></span>
-                  <span>Expenses: <span className="text-red-500 font-medium">£{Number(r.total_expense).toFixed(2)}</span></span>
-                  <span className="col-span-2 font-semibold text-sm">Net: <span className={Number(r.total) >= 0 ? "text-[#f69a39]" : "text-red-500"}>£{Number(r.total).toFixed(2)}</span></span>
+                  <span>Profit: <span className="text-green-600 font-medium">${Number(r.total_profit_amount).toFixed(2)}</span></span>
+                  <span>Expenses: <span className="text-red-500 font-medium">${Number(r.total_expense).toFixed(2)}</span></span>
+                  <span className="col-span-2 font-semibold text-sm">Net: <span className={Number(r.total) >= 0 ? "text-[#f69a39]" : "text-red-500"}>${Number(r.total).toFixed(2)}</span></span>
                 </div>
               </div>
             ))}

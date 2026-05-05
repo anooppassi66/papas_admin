@@ -81,8 +81,8 @@ export default function VariantsPage() {
                 <td className="px-4 py-3 text-gray-500">{v.size || "—"}</td>
                 <td className="px-4 py-3 text-gray-500">{v.color || "—"}</td>
                 <td className="px-4 py-3 font-mono text-xs text-gray-400">{v.sku || "—"}</td>
-                <td className="px-4 py-3 text-gray-500">{v.actual_price ? `£${Number(v.actual_price).toFixed(2)}` : "—"}</td>
-                <td className="px-4 py-3 font-medium">{v.selling_price ? `£${Number(v.selling_price).toFixed(2)}` : "—"}</td>
+                <td className="px-4 py-3 text-gray-500">{v.actual_price ? `$${Number(v.actual_price).toFixed(2)}` : "—"}</td>
+                <td className="px-4 py-3 font-medium">{v.selling_price ? `$${Number(v.selling_price).toFixed(2)}` : "—"}</td>
                 <td className="px-4 py-3"><StatusBadge active={!!v.is_active} /></td>
                 <td className="px-4 py-3">
                   <div className="flex gap-2">
@@ -145,12 +145,12 @@ export default function VariantsPage() {
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Actual Price (£)</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Actual Price ($)</label>
                 <input type="number" step="0.01" value={form.actual_price} onChange={e => setForm({ ...form, actual_price: e.target.value })}
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#f69a39]" />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Selling Price (£)</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Selling Price ($)</label>
                 <input type="number" step="0.01" value={form.selling_price} onChange={e => setForm({ ...form, selling_price: e.target.value })}
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#f69a39]" />
               </div>

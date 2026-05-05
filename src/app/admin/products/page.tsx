@@ -89,7 +89,7 @@ export default function ProductsPage() {
                 <td className="px-4 py-3 font-mono text-xs text-gray-400">{p.product_code}</td>
                 <td className="px-4 py-3 font-medium">{p.name}</td>
                 <td className="px-4 py-3 text-gray-500">{p.brand_name || "—"}</td>
-                <td className="px-4 py-3 text-gray-500">{p.sell_price ? `£${Number(p.sell_price).toFixed(2)}` : "—"}</td>
+                <td className="px-4 py-3 text-gray-500">{p.sell_price ? `$${Number(p.sell_price).toFixed(2)}` : "—"}</td>
                 <td className="px-4 py-3"><StatusBadge active={!!p.is_active} /></td>
                 <td className="px-4 py-3">
                   <div className="flex gap-2">
@@ -149,7 +149,7 @@ export default function ProductsPage() {
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Sell Price (£)</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Sell Price ($)</label>
                 <input type="number" step="0.01" value={form.sell_price} onChange={e => setForm({ ...form, sell_price: e.target.value })}
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#f69a39]" />
               </div>

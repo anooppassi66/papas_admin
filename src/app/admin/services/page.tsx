@@ -64,10 +64,10 @@ export default function ServicesPage() {
                   <td className="px-3 py-2 text-xs">{o.brand_name || "—"}</td>
                   <td className="px-3 py-2 text-xs text-gray-500">{o.repair_reason || "—"}</td>
                   <td className="px-3 py-2 text-xs">{o.quantity}</td>
-                  <td className="px-3 py-2 text-xs">£{Number(o.price).toFixed(2)}</td>
-                  <td className="px-3 py-2 text-xs">£{Number(o.selling_price).toFixed(2)}</td>
-                  <td className="px-3 py-2 text-xs font-medium text-red-500">£{Number(o.pending_amount).toFixed(2)}</td>
-                  <td className="px-3 py-2 text-xs font-medium text-green-600">£{Number(o.profit_amount).toFixed(2)}</td>
+                  <td className="px-3 py-2 text-xs">${Number(o.price).toFixed(2)}</td>
+                  <td className="px-3 py-2 text-xs">${Number(o.selling_price).toFixed(2)}</td>
+                  <td className="px-3 py-2 text-xs font-medium text-red-500">${Number(o.pending_amount).toFixed(2)}</td>
+                  <td className="px-3 py-2 text-xs font-medium text-green-600">${Number(o.profit_amount).toFixed(2)}</td>
                   <td className="px-3 py-2">
                     <select value={o.status} onChange={e => updateStatus(o.id, e.target.value)}
                       className="text-xs border border-gray-200 rounded px-2 py-1 focus:outline-none focus:border-[#f69a39]">
