@@ -1,13 +1,14 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
+import Image from "next/image";
 import AdminHeader from "@/components/admin/AdminHeader";
 import Modal from "@/components/admin/Modal";
 import StatusBadge from "@/components/admin/StatusBadge";
-import { api } from "@/lib/api";
+import { api, UPLOADS } from "@/lib/api";
 
 interface Category {
   id: number; name: string; parent_id: number | null; parent_name?: string;
-  level: number; slug: string; is_active: boolean;
+  level: number; slug: string; image?: string; is_active: boolean;
 }
 
 const EMPTY = { name: "", parent_id: "" as string | number, slug: "" };
@@ -18,6 +19,8 @@ export default function CategoriesPage() {
   const [modal, setModal] = useState(false);
   const [editing, setEditing] = useState<Category | null>(null);
   const [form, setForm] = useState(EMPTY);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -30,20 +33,40 @@ export default function CategoriesPage() {
     return v.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
   }
 
-  function openAdd() { setEditing(null); setForm(EMPTY); setError(""); setModal(true); }
+  function openAdd() {
+    setEditing(null); setForm(EMPTY); setImageFile(null); setImagePreview(null); setError(""); setModal(true);
+  }
   function openEdit(c: Category) {
     setEditing(c);
     setForm({ name: c.name, parent_id: c.parent_id ?? "", slug: c.slug });
+    setImageFile(null);
+    setImagePreview(c.image ? `${UPLOADS}${c.image}` : null);
     setError(""); setModal(true);
+  }
+
+  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0] || null;
+    setImageFile(file);
+    if (file) setImagePreview(URL.createObjectURL(file));
   }
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true); setError("");
     try {
-      const payload = { name: form.name, parent_id: form.parent_id || null, slug: form.slug };
-      if (editing) { await api.put(`/categories/${editing.id}`, payload); }
-      else { await api.post("/categories", payload); }
+      if (imageFile) {
+        const fd = new FormData();
+        fd.append("name", form.name);
+        fd.append("parent_id", String(form.parent_id));
+        fd.append("slug", form.slug);
+        fd.append("image", imageFile);
+        if (editing) await api.put(`/categories/${editing.id}`, fd);
+        else await api.post("/categories", fd);
+      } else {
+        const payload = { name: form.name, parent_id: form.parent_id || null, slug: form.slug };
+        if (editing) await api.put(`/categories/${editing.id}`, payload);
+        else await api.post("/categories", payload);
+      }
       setModal(false); load();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Error");
@@ -63,24 +86,35 @@ export default function CategoriesPage() {
         <table className="w-full text-sm">
           <thead className="bg-[#1e1e21] text-white">
             <tr>
-              {["Category Name", "Slug", "Level", "Parent", "Status", "Actions"].map(h => (
+              {["Image", "Category Name", "Slug", "Level", "Parent", "Status", "Actions"].map(h => (
                 <th key={h} className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wide">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
             {cats.length === 0 ? (
-              <tr><td colSpan={6} className="text-center py-12 text-gray-400">No categories yet</td></tr>
+              <tr><td colSpan={7} className="text-center py-12 text-gray-400">No categories yet</td></tr>
             ) : cats.map(c => (
               <tr key={c.id} className="hover:bg-gray-50 transition-colors">
+                <td className="px-4 py-3">
+                  {c.image ? (
+                    <div className="relative w-10 h-10 rounded-lg overflow-hidden border border-gray-100 flex-shrink-0">
+                      <Image src={`${UPLOADS}${c.image}`} alt={c.name} fill className="object-cover" sizes="40px" />
+                    </div>
+                  ) : (
+                    <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                      <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  )}
+                </td>
                 <td className="px-4 py-3 font-medium">
-                  <span className="text-gray-300">{INDENT[Math.min(c.level, 3)]}</span>{c.name}
+                  <span className="text-gray-300 text-xs">{INDENT[Math.min(c.level, 3)]}</span>{c.name}
                 </td>
                 <td className="px-4 py-3 text-gray-400 font-mono text-xs">{c.slug}</td>
                 <td className="px-4 py-3">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-blue-50 text-blue-600">
-                    L{c.level}
-                  </span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-blue-50 text-blue-600">L{c.level}</span>
                 </td>
                 <td className="px-4 py-3 text-gray-500">{c.parent_name || "—"}</td>
                 <td className="px-4 py-3"><StatusBadge active={!!c.is_active} /></td>
@@ -123,6 +157,30 @@ export default function CategoriesPage() {
               <input required value={form.slug} onChange={e => setForm({ ...form, slug: e.target.value })}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:border-[#f69a39]" />
             </div>
+
+            {/* Image upload */}
+            <div>
+              <label className="block text-xs font-medium text-gray-500 mb-1">
+                Category Image {editing && "(leave blank to keep current)"}
+              </label>
+              {imagePreview && (
+                <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-gray-200 mb-2">
+                  <Image src={imagePreview} alt="Preview" fill className="object-cover" sizes="96px" />
+                  <button
+                    type="button"
+                    onClick={() => { setImageFile(null); setImagePreview(editing?.image ? `${UPLOADS}${editing.image}` : null); }}
+                    className="absolute top-1 right-1 bg-black/60 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-500 transition-colors"
+                  >×</button>
+                </div>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-[#f69a39]/10 file:text-[#f69a39] file:text-xs file:font-medium"
+              />
+            </div>
+
             <div className="flex justify-end gap-2 pt-2">
               <button type="button" onClick={() => setModal(false)} className="px-4 py-2 text-sm text-gray-500">Cancel</button>
               <button type="submit" disabled={loading}

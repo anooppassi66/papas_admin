@@ -50,14 +50,14 @@ export default function DashboardPage() {
   }, []);
 
   const cards = [
-    { label: "Stores", value: stats.stores, icon: "🏪", color: "bg-orange-50 text-[#f69a39]", href: "/admin/stores" },
-    { label: "Products", value: stats.products, icon: "📦", color: "bg-blue-50 text-blue-600", href: "/admin/products" },
-    { label: "Variations", value: stats.variants, icon: "🔀", color: "bg-purple-50 text-purple-600", href: "/admin/product-variants" },
-    { label: "Vendors", value: stats.vendors, icon: "🚚", color: "bg-green-50 text-green-600", href: "/admin/vendors" },
-    { label: "Brands", value: stats.brands, icon: "🏷", color: "bg-yellow-50 text-yellow-600", href: "/admin/brands" },
-    { label: "Categories", value: stats.categories, icon: "📁", color: "bg-pink-50 text-pink-600", href: "/admin/categories" },
-    { label: "Invoices", value: stats.invoices, icon: "🧾", color: "bg-indigo-50 text-indigo-600", href: "/admin/invoices" },
-    { label: "Services", value: stats.services, icon: "🔧", color: "bg-red-50 text-red-600", href: "/admin/services" },
+    { label: "Stores",      value: stats.stores,     icon: "fa-solid fa-store",               color: "bg-orange-50 text-[#f69a39]",  href: "/admin/stores" },
+    { label: "Products",    value: stats.products,   icon: "fa-solid fa-box",                 color: "bg-blue-50 text-blue-600",     href: "/admin/products" },
+    { label: "Variations",  value: stats.variants,   icon: "fa-solid fa-shuffle",             color: "bg-purple-50 text-purple-600", href: "/admin/product-variants" },
+    { label: "Vendors",     value: stats.vendors,    icon: "fa-solid fa-truck",               color: "bg-green-50 text-green-600",   href: "/admin/vendors" },
+    { label: "Brands",      value: stats.brands,     icon: "fa-solid fa-tag",                 color: "bg-yellow-50 text-yellow-600", href: "/admin/brands" },
+    { label: "Categories",  value: stats.categories, icon: "fa-solid fa-folder",              color: "bg-pink-50 text-pink-600",     href: "/admin/categories" },
+    { label: "Invoices",    value: stats.invoices,   icon: "fa-solid fa-file-invoice",        color: "bg-indigo-50 text-indigo-600", href: "/admin/invoices" },
+    { label: "Services",    value: stats.services,   icon: "fa-solid fa-screwdriver-wrench",  color: "bg-red-50 text-red-600",       href: "/admin/services" },
   ];
 
   return (
@@ -67,8 +67,8 @@ export default function DashboardPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {cards.map((c) => (
           <a key={c.label} href={c.href} className={`${CARD_STYLE} hover:shadow-md transition-shadow cursor-pointer`}>
-            <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg ${c.color} text-xl mb-3`}>
-              {c.icon}
+            <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg ${c.color} mb-3`}>
+              <i className={`${c.icon} text-lg`} />
             </div>
             <div className="text-2xl font-bold text-[#1e1e21]">{c.value}</div>
             <div className="text-xs text-gray-400 mt-0.5">{c.label}</div>

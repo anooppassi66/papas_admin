@@ -14,7 +14,21 @@ interface Brand { id: number; brand_name: string; }
 interface Category { id: number; name: string; parent_id: number | null; level: number; }
 
 const INDENT = ["", "└─ ", "  └─ ", "    └─ "];
-const EMPTY = { product_code: "", name: "", description: "", category_id: "", brand_id: "" as string | number, sell_price: "" as string | number };
+const EMPTY = { product_code: "", name: "", description: "", brand_id: "" as string | number, sell_price: "" as string | number };
+
+// Build full set of category IDs including ancestors for selected categories
+function buildCategoryIds(selectedIds: number[], catMap: Map<number, Category>): string {
+  const all = new Set<number>();
+  for (const id of selectedIds) {
+    all.add(id);
+    let current = catMap.get(id);
+    while (current?.parent_id) {
+      all.add(current.parent_id);
+      current = catMap.get(current.parent_id);
+    }
+  }
+  return Array.from(all).sort((a, b) => a - b).join(",");
+}
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -23,6 +37,7 @@ export default function ProductsPage() {
   const [modal, setModal] = useState(false);
   const [editing, setEditing] = useState<Product | null>(null);
   const [form, setForm] = useState(EMPTY);
+  const [selectedCatIds, setSelectedCatIds] = useState<number[]>([]);
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -35,23 +50,34 @@ export default function ProductsPage() {
   }, []);
   useEffect(() => { load(); }, [load]);
 
-  function openAdd() { setEditing(null); setForm(EMPTY); setImageFiles(null); setError(""); setModal(true); }
+  const catMap = new Map(cats.map(c => [c.id, c]));
+
+  function openAdd() {
+    setEditing(null); setForm(EMPTY); setSelectedCatIds([]); setImageFiles(null); setError(""); setModal(true);
+  }
   function openEdit(p: Product) {
     setEditing(p);
-    const catIds = p.category_id ? p.category_id.split(",") : [];
-    const childCatId = catIds[catIds.length - 1] || "";
-    setForm({ product_code: p.product_code, name: p.name, description: p.description || "", category_id: childCatId, brand_id: p.brand_id || "", sell_price: p.sell_price || "" });
+    const catIds = p.category_id ? p.category_id.split(",").map(Number).filter(Boolean) : [];
+    setSelectedCatIds(catIds);
+    setForm({ product_code: p.product_code, name: p.name, description: p.description || "", brand_id: p.brand_id || "", sell_price: p.sell_price || "" });
     setImageFiles(null); setError(""); setModal(true);
+  }
+
+  function toggleCat(id: number) {
+    setSelectedCatIds(prev =>
+      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    );
   }
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault(); setLoading(true); setError("");
     try {
+      const categoryIdStr = buildCategoryIds(selectedCatIds, catMap);
       const fd = new FormData();
       fd.append("product_code", String(form.product_code));
       fd.append("name", String(form.name));
       fd.append("description", String(form.description));
-      fd.append("category_id", String(form.category_id));
+      fd.append("category_id", categoryIdStr);
       fd.append("brand_id", String(form.brand_id));
       fd.append("sell_price", String(form.sell_price));
       if (imageFiles) Array.from(imageFiles).forEach(f => fd.append("images", f));
@@ -64,8 +90,18 @@ export default function ProductsPage() {
 
   async function toggleActive(id: number) { await api.patch(`/products/${id}/toggle`); load(); }
 
-  // Only leaf categories (ones with no children) are selectable; parents auto-fill
-  const childCats = cats.filter(c => !cats.some(x => x.parent_id === c.id));
+  // Determine which selected IDs are "ancestors" of other selected IDs (auto-added)
+  function isAncestorOfSelected(id: number): boolean {
+    return selectedCatIds.some(selId => {
+      if (selId === id) return false;
+      let c = catMap.get(selId);
+      while (c?.parent_id) {
+        if (c.parent_id === id) return true;
+        c = catMap.get(c.parent_id);
+      }
+      return false;
+    });
+  }
 
   return (
     <div>
@@ -126,18 +162,49 @@ export default function ProductsPage() {
               <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} rows={3}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#f69a39]" />
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Category (select child category)</label>
-                <select value={form.category_id} onChange={e => setForm({ ...form, category_id: e.target.value })}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#f69a39]">
-                  <option value="">Select category</option>
-                  {childCats.map(c => (
-                    <option key={c.id} value={c.id}>{INDENT[Math.min(c.level, 3)]}{c.name}</option>
-                  ))}
-                </select>
-                <p className="text-xs text-gray-400 mt-1">Parent categories will be auto-added</p>
+
+            {/* Multi-category selector */}
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-xs font-medium text-gray-500">
+                  Categories
+                  {selectedCatIds.length > 0 && (
+                    <span className="ml-2 text-[#f69a39] font-semibold">{selectedCatIds.length} selected</span>
+                  )}
+                </label>
+                {selectedCatIds.length > 0 && (
+                  <button type="button" onClick={() => setSelectedCatIds([])} className="text-xs text-gray-400 hover:text-red-500 transition-colors">
+                    Clear all
+                  </button>
+                )}
               </div>
+              <div className="border border-gray-200 rounded-lg overflow-y-auto max-h-[200px] divide-y divide-gray-50">
+                {cats.length === 0 ? (
+                  <p className="text-xs text-gray-400 p-3">No categories found</p>
+                ) : cats.map(c => {
+                  const isSelected = selectedCatIds.includes(c.id);
+                  const isAuto = isSelected && isAncestorOfSelected(c.id);
+                  return (
+                    <label key={c.id} className={`flex items-center gap-2.5 px-3 py-2 cursor-pointer transition-colors ${isSelected ? "bg-[#fff8f0]" : "hover:bg-gray-50"}`}>
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={() => toggleCat(c.id)}
+                        className="accent-[#f69a39] w-3.5 h-3.5 flex-shrink-0"
+                      />
+                      <span className="text-sm flex-1">
+                        <span className="text-gray-300 text-xs">{INDENT[Math.min(c.level, 3)]}</span>
+                        <span className={isSelected ? "text-[#1e1e21] font-medium" : "text-gray-600"}>{c.name}</span>
+                        {isAuto && <span className="ml-1.5 text-[10px] text-[#f69a39] font-medium">(auto)</span>}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+              <p className="text-xs text-gray-400 mt-1">Parent categories are included automatically on save.</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Brand</label>
                 <select value={form.brand_id} onChange={e => setForm({ ...form, brand_id: e.target.value })}
@@ -146,19 +213,19 @@ export default function ProductsPage() {
                   {brands.map(b => <option key={b.id} value={b.id}>{b.brand_name}</option>)}
                 </select>
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Sell Price ($)</label>
                 <input type="number" step="0.01" value={form.sell_price} onChange={e => setForm({ ...form, sell_price: e.target.value })}
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#f69a39]" />
               </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Images {editing && "(leave blank to keep current)"}</label>
-                <input type="file" multiple accept="image/*" onChange={e => setImageFiles(e.target.files)}
-                  className="w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-[#f69a39]/10 file:text-[#f69a39] file:text-xs file:font-medium" />
-              </div>
             </div>
+
+            <div>
+              <label className="block text-xs font-medium text-gray-500 mb-1">Images {editing && "(leave blank to keep current)"}</label>
+              <input type="file" multiple accept="image/*" onChange={e => setImageFiles(e.target.files)}
+                className="w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-[#f69a39]/10 file:text-[#f69a39] file:text-xs file:font-medium" />
+            </div>
+
             <div className="flex justify-end gap-2 pt-2">
               <button type="button" onClick={() => setModal(false)} className="px-4 py-2 text-sm text-gray-500">Cancel</button>
               <button type="submit" disabled={loading}

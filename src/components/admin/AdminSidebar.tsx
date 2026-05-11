@@ -3,21 +3,28 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 const NAV = [
-  { label: "Dashboard", href: "/admin/dashboard", icon: "⊞" },
-  { label: "Stores", href: "/admin/stores", icon: "🏪" },
-  { label: "Brands", href: "/admin/brands", icon: "🏷" },
-  { label: "Categories", href: "/admin/categories", icon: "📁" },
-  { label: "Products", href: "/admin/products", icon: "📦" },
-  { label: "Variations", href: "/admin/product-variants", icon: "🔀" },
-  { label: "Vendors", href: "/admin/vendors", icon: "🚚" },
-  { label: "Invoices", href: "/admin/invoices", icon: "🧾" },
-  { label: "Purchase Lines", href: "/admin/purchase-lines", icon: "📋" },
-  { label: "Inventory", href: "/admin/inventory", icon: "🗃" },
-  { label: "Services", href: "/admin/services", icon: "🔧" },
-  { label: "P&L Statement", href: "/admin/profit-loss", icon: "📊" },
-  { label: "Settings", href: "/admin/settings", icon: "⚙" },
-  { label: "Mega Menu", href: "/admin/mega-menu", icon: "☰" },
-  { label: "Banners", href: "/admin/banners", icon: "🖼" },
+  { label: "Dashboard",      href: "/admin/dashboard",       icon: "fa-solid fa-gauge-high" },
+  { label: "Stores",         href: "/admin/stores",          icon: "fa-solid fa-store" },
+  { label: "Brands",         href: "/admin/brands",          icon: "fa-solid fa-tag" },
+  { label: "Categories",     href: "/admin/categories",      icon: "fa-solid fa-folder" },
+  { label: "Products",       href: "/admin/products",        icon: "fa-solid fa-box" },
+  { label: "Variations",     href: "/admin/product-variants",icon: "fa-solid fa-shuffle" },
+  { label: "Vendors",        href: "/admin/vendors",         icon: "fa-solid fa-truck" },
+  { label: "Invoices",       href: "/admin/invoices",        icon: "fa-solid fa-file-invoice" },
+  { label: "Purchase Lines", href: "/admin/purchase-lines",  icon: "fa-solid fa-clipboard-list" },
+  { label: "Inventory",      href: "/admin/inventory",       icon: "fa-solid fa-warehouse" },
+  { label: "Services",       href: "/admin/services",        icon: "fa-solid fa-screwdriver-wrench" },
+  { label: "P&L Statement",  href: "/admin/profit-loss",     icon: "fa-solid fa-chart-line" },
+  { label: "Settings",       href: "/admin/settings",        icon: "fa-solid fa-gear" },
+  { label: "Mega Menu",      href: "/admin/mega-menu",       icon: "fa-solid fa-bars" },
+  { label: "Banners",        href: "/admin/banners",         icon: "fa-solid fa-image" },
+  { label: "Orders",         href: "/admin/orders",          icon: "fa-solid fa-cart-shopping" },
+  { label: "Returns",        href: "/admin/returns",         icon: "fa-solid fa-rotate-left" },
+  { label: "Blog Posts",     href: "/admin/blogs",           icon: "fa-solid fa-pen-nib" },
+  { label: "Blog Categories",href: "/admin/blog-categories", icon: "fa-solid fa-folder-open" },
+  { label: "Newsletter",     href: "/admin/newsletter",      icon: "fa-solid fa-envelope" },
+  { label: "Gift Cards",     href: "/admin/gift-cards",      icon: "fa-solid fa-gift" },
+  { label: "Homepage",       href: "/admin/homepage",        icon: "fa-solid fa-house" },
 ];
 
 export default function AdminSidebar() {
@@ -51,7 +58,7 @@ export default function AdminSidebar() {
                   : "text-white/60 hover:text-white hover:bg-white/5"
               }`}
             >
-              <span className="text-base w-5 text-center">{item.icon}</span>
+              <i className={`${item.icon} w-5 text-center text-[13px]`} />
               {item.label}
             </Link>
           );

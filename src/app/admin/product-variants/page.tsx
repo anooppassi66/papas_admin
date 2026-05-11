@@ -7,11 +7,11 @@ import { api } from "@/lib/api";
 
 interface Variant {
   id: number; product_id: number; product_name?: string; product_code?: string;
-  size: string; color: string; sku: string; actual_price: number; selling_price: number; is_active: boolean;
+  size: string; color: string; sku: string; actual_price: number; selling_price: number; offer_price: number | null; is_active: boolean;
 }
 interface Product { id: number; name: string; product_code: string; }
 
-const EMPTY = { product_id: "" as string | number, size: "", color: "", sku: "", actual_price: "" as string | number, selling_price: "" as string | number };
+const EMPTY = { product_id: "" as string | number, size: "", color: "", sku: "", actual_price: "" as string | number, selling_price: "" as string | number, offer_price: "" as string | number };
 
 export default function VariantsPage() {
   const [variants, setVariants] = useState<Variant[]>([]);
@@ -42,7 +42,7 @@ export default function VariantsPage() {
   function openAdd() { setEditing(null); setForm(EMPTY); setNewSize(""); setNewColor(""); setError(""); setModal(true); }
   function openEdit(v: Variant) {
     setEditing(v);
-    setForm({ product_id: v.product_id, size: v.size || "", color: v.color || "", sku: v.sku || "", actual_price: v.actual_price || "", selling_price: v.selling_price || "" });
+    setForm({ product_id: v.product_id, size: v.size || "", color: v.color || "", sku: v.sku || "", actual_price: v.actual_price || "", selling_price: v.selling_price || "", offer_price: v.offer_price ?? "" });
     setNewSize(""); setNewColor(""); setError(""); setModal(true);
   }
 
@@ -68,7 +68,7 @@ export default function VariantsPage() {
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-[#1e1e21] text-white">
-            <tr>{["Product", "Size", "Color", "SKU", "Cost", "Selling Price", "Status", "Actions"].map(h => (
+            <tr>{["Product", "Size", "Color", "SKU", "Cost", "Selling Price", "Offer Price", "Status", "Actions"].map(h => (
               <th key={h} className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wide">{h}</th>
             ))}</tr>
           </thead>
@@ -83,6 +83,13 @@ export default function VariantsPage() {
                 <td className="px-4 py-3 font-mono text-xs text-gray-400">{v.sku || "—"}</td>
                 <td className="px-4 py-3 text-gray-500">{v.actual_price ? `$${Number(v.actual_price).toFixed(2)}` : "—"}</td>
                 <td className="px-4 py-3 font-medium">{v.selling_price ? `$${Number(v.selling_price).toFixed(2)}` : "—"}</td>
+                <td className="px-4 py-3">
+                  {v.offer_price ? (
+                    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-red-50 border border-red-200 text-red-600 rounded-full text-xs font-semibold">
+                      🏷 ${Number(v.offer_price).toFixed(2)}
+                    </span>
+                  ) : <span className="text-gray-300">—</span>}
+                </td>
                 <td className="px-4 py-3"><StatusBadge active={!!v.is_active} /></td>
                 <td className="px-4 py-3">
                   <div className="flex gap-2">
@@ -154,6 +161,19 @@ export default function VariantsPage() {
                 <input type="number" step="0.01" value={form.selling_price} onChange={e => setForm({ ...form, selling_price: e.target.value })}
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#f69a39]" />
               </div>
+            </div>
+            <div className="border border-dashed border-red-200 rounded-lg p-3 bg-red-50/50">
+              <label className="block text-xs font-semibold text-red-600 mb-1">🏷 Offer Price ($) <span className="font-normal text-gray-400">— leave blank for no offer</span></label>
+              <input
+                type="number" step="0.01" min="0"
+                value={form.offer_price}
+                onChange={e => setForm({ ...form, offer_price: e.target.value })}
+                placeholder="e.g. 79.99"
+                className="w-full border border-red-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-400 bg-white"
+              />
+              {form.offer_price && form.selling_price && Number(form.offer_price) >= Number(form.selling_price) && (
+                <p className="text-xs text-red-500 mt-1">⚠ Offer price should be less than selling price</p>
+              )}
             </div>
             <div className="flex justify-end gap-2 pt-2">
               <button type="button" onClick={() => setModal(false)} className="px-4 py-2 text-sm text-gray-500">Cancel</button>
