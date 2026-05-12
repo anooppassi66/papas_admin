@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { api } from "@/lib/api";
 
 export default function LoginPage() {
@@ -75,7 +76,11 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="text-center text-white/20 text-xs mt-6">Papas Willow © {new Date().getFullYear()}</p>
+        <div className="flex items-center justify-center gap-2 mt-6">
+          <span className="text-white/50 text-xs">Powered by</span>
+          <Image src="/keydos-logo.webp" alt="Keydos" width={72} height={24} className="opacity-80 hover:opacity-100 transition-opacity" />
+        </div>
+        <p className="text-center text-white/20 text-xs mt-3">Papas Willow © {new Date().getFullYear()}</p>
       </div>
     </div>
   );

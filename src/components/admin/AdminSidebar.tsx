@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 
 const NAV = [
@@ -73,6 +74,12 @@ export default function AdminSidebar() {
         >
           ⎋ Logout
         </button>
+      </div>
+
+      {/* Powered by Keydos */}
+      <div className="px-5 py-3 border-t border-white/10 flex items-center justify-center gap-2">
+        <span className="text-[10px] text-white/70">Powered by</span>
+        <Image src="/keydos-logo.webp" alt="Keydos" width={70} height={24} className="opacity-90 hover:opacity-100 transition-opacity" />
       </div>
     </aside>
   );
