@@ -77,9 +77,11 @@ export default function AdminSidebar() {
       </div>
 
       {/* Powered by Keydos */}
-      <div className="px-5 py-3 border-t border-white/10 flex items-center justify-center gap-2">
-        <span className="text-[10px] text-white/70">Powered by</span>
-        <Image src="/keydos-logo.webp" alt="Keydos" width={70} height={24} className="opacity-90 hover:opacity-100 transition-opacity" />
+      <div className="px-5 py-3 border-t border-white/10 flex justify-center">
+        <a href="https://www.kkeydos.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 group">
+          <span className="text-[10px] text-white/70 group-hover:text-white/90 transition-colors">Powered by</span>
+          <Image src="/keydos-logo.webp" alt="Keydos" width={70} height={24} className="opacity-90 group-hover:opacity-100 transition-opacity" />
+        </a>
       </div>
     </aside>
   );

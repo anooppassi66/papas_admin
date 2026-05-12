@@ -76,10 +76,10 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="flex items-center justify-center gap-2 mt-6">
-          <span className="text-white/50 text-xs">Powered by</span>
-          <Image src="/keydos-logo.webp" alt="Keydos" width={72} height={24} className="opacity-80 hover:opacity-100 transition-opacity" />
-        </div>
+        <a href="https://www.kkeydos.com/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 mt-6 group">
+          <span className="text-white/50 text-xs group-hover:text-white/70 transition-colors">Powered by</span>
+          <Image src="/keydos-logo.webp" alt="Keydos" width={72} height={24} className="opacity-80 group-hover:opacity-100 transition-opacity" />
+        </a>
         <p className="text-center text-white/20 text-xs mt-3">Papas Willow © {new Date().getFullYear()}</p>
       </div>
     </div>
