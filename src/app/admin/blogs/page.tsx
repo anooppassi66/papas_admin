@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import AdminHeader from "@/components/admin/AdminHeader";
 import Modal from "@/components/admin/Modal";
+import SearchableSelect from "@/components/admin/SearchableSelect";
 import StatusBadge from "@/components/admin/StatusBadge";
 import { api, UPLOADS } from "@/lib/api";
 
@@ -135,11 +136,12 @@ export default function BlogsPage() {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Blog Category</label>
-                <select value={form.category_id} onChange={e => setForm({ ...form, category_id: e.target.value })}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#f69a39]">
-                  <option value="">— No category —</option>
-                  {cats.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                </select>
+                <SearchableSelect
+                  value={form.category_id}
+                  onChange={v => setForm({ ...form, category_id: v })}
+                  placeholder="— No category —"
+                  options={[{ value: "", label: "— No category —" }, ...cats.map(c => ({ value: String(c.id), label: c.name }))]}
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Blog Title *</label>

@@ -1,0 +1,54 @@
+product_code,name,slug,category_name,brand_name,description,sell_price,sku,size,color,actual_price,selling_price
+BAT-SS-001,SS Ton Master 5000 Cricket Bat,ss-ton-master-5000,English Willow Bats,SS,Grade 1 English Willow cricket bat with traditional profile and full toe,299.00,BAT-SS-001-SH,Short Handle,Natural,165.00,299.00
+BAT-SS-001,SS Ton Master 5000 Cricket Bat,ss-ton-master-5000,English Willow Bats,SS,Grade 1 English Willow cricket bat with traditional profile and full toe,299.00,BAT-SS-001-LH,Long Handle,Natural,165.00,309.00
+BAT-KG-002,Kookaburra Ghost Pro Cricket Bat,kookaburra-ghost-pro,English Willow Bats,Kookaburra,Grade 1 English Willow with ultra-thin edges and concave spine,389.00,BAT-KG-002-SH,Short Handle,Natural,210.00,389.00
+BAT-KG-002,Kookaburra Ghost Pro Cricket Bat,kookaburra-ghost-pro,English Willow Bats,Kookaburra,Grade 1 English Willow with ultra-thin edges and concave spine,389.00,BAT-KG-002-LH,Long Handle,Natural,210.00,399.00
+BAT-GN-003,Gray Nicolls Omega XRD Bat,gn-omega-xrd,English Willow Bats,Gray Nicolls,Pro-grade English Willow with traditional scoop and extra edges,349.00,BAT-GN-003-SH,Short Handle,Natural,195.00,349.00
+BAT-SG-004,SG Sunny Tonny XT Cricket Bat,sg-sunny-tonny-xt,Kashmir Willow Bats,SG,Premium Kashmir Willow ideal for practice and club cricket,89.00,BAT-SG-004-SH,Short Handle,Natural,48.00,89.00
+BAT-SG-004,SG Sunny Tonny XT Cricket Bat,sg-sunny-tonny-xt,Kashmir Willow Bats,SG,Premium Kashmir Willow ideal for practice and club cricket,89.00,BAT-SG-004-LH,Long Handle,Natural,48.00,95.00
+BAT-SS-005,SS Ton Junior Cricket Bat,ss-ton-junior,Junior Cricket Bats,SS,Kashmir Willow junior bat for young cricketers aged 8-14,59.00,BAT-SS-005-4,Size 4,,Natural,32.00,59.00
+BAT-SS-005,SS Ton Junior Cricket Bat,ss-ton-junior,Junior Cricket Bats,SS,Kashmir Willow junior bat for young cricketers aged 8-14,59.00,BAT-SS-005-5,Size 5,,Natural,32.00,59.00
+BAT-SS-005,SS Ton Junior Cricket Bat,ss-ton-junior,Junior Cricket Bats,SS,Kashmir Willow junior bat for young cricketers aged 8-14,59.00,BAT-SS-005-6,Size 6,,Natural,35.00,65.00
+BALL-KK-001,Kookaburra Tuf Pitch Cricket Ball,kookaburra-tuf-pitch,Red Cricket Balls,Kookaburra,4-piece hand-stitched red leather cricket ball for match play,25.00,BALL-KK-001-STD,Standard,,Red,13.00,25.00
+BALL-KK-002,Kookaburra Tuf Pitch White Ball,kookaburra-tuf-pitch-white,White Cricket Balls,Kookaburra,4-piece hand-stitched white leather cricket ball for limited overs,25.00,BALL-KK-002-STD,Standard,,White,13.00,25.00
+BALL-SG-003,SG Test Ultimate Cricket Ball,sg-test-ultimate,Red Cricket Balls,SG,Premium hand-stitched red leather ball used in first-class cricket,35.00,BALL-SG-003-STD,Standard,,Red,19.00,35.00
+BALL-KK-004,Kookaburra Regulation Swing Ball,kookaburra-regulation-swing,Pink Cricket Balls,Kookaburra,Pink leather ball for day-night test match cricket,35.00,BALL-KK-004-STD,Standard,,Pink,19.00,35.00
+BALL-TN-005,Cosco Tennis Cricket Ball,cosco-tennis-cricket,Tennis Cricket Balls,Cosco,Rubber core tennis ball for street and casual cricket,5.00,BALL-TN-005-YLW,Standard,,Yellow,2.50,5.00
+BALL-TN-005,Cosco Tennis Cricket Ball,cosco-tennis-cricket,Tennis Cricket Balls,Cosco,Rubber core tennis ball for street and casual cricket,5.00,BALL-TN-005-ORG,Standard,,Orange,2.50,5.00
+PAD-GN-001,Gray Nicolls Oblivion Pads,gn-oblivion-pads,Batting Pads,Gray Nicolls,Lightweight batting pads with dual-density foam and full calf protection,145.00,PAD-GN-001-AS,Adult Small,White,80.00,145.00
+PAD-GN-001,Gray Nicolls Oblivion Pads,gn-oblivion-pads,Batting Pads,Gray Nicolls,Lightweight batting pads with dual-density foam and full calf protection,145.00,PAD-GN-001-AM,Adult Medium,White,80.00,145.00
+PAD-GN-001,Gray Nicolls Oblivion Pads,gn-oblivion-pads,Batting Pads,Gray Nicolls,Lightweight batting pads with dual-density foam and full calf protection,145.00,PAD-GN-001-AL,Adult Large,White,80.00,145.00
+PAD-GN-001,Gray Nicolls Oblivion Pads,gn-oblivion-pads,Batting Pads,Gray Nicolls,Lightweight batting pads with dual-density foam and full calf protection,145.00,PAD-GN-001-JS,Junior Small,White,60.00,110.00
+PAD-GN-001,Gray Nicolls Oblivion Pads,gn-oblivion-pads,Batting Pads,Gray Nicolls,Lightweight batting pads with dual-density foam and full calf protection,145.00,PAD-GN-001-JM,Junior Medium,White,60.00,110.00
+GLOVE-KK-002,Kookaburra Pro 1500 Gloves,kookaburra-pro-1500-gloves,Batting Gloves,Kookaburra,Full leather palm with padded finger rolls and ventilated back,89.00,GLOVE-KK-002-AS,Adult Small,White,48.00,89.00
+GLOVE-KK-002,Kookaburra Pro 1500 Gloves,kookaburra-pro-1500-gloves,Batting Gloves,Kookaburra,Full leather palm with padded finger rolls and ventilated back,89.00,GLOVE-KK-002-AM,Adult Medium,White,48.00,89.00
+GLOVE-KK-002,Kookaburra Pro 1500 Gloves,kookaburra-pro-1500-gloves,Batting Gloves,Kookaburra,Full leather palm with padded finger rolls and ventilated back,89.00,GLOVE-KK-002-AL,Adult Large,White,48.00,89.00
+HELM-SS-001,SS Premium Cricket Helmet,ss-premium-helmet,Helmets,SS,Steel grille helmet with moisture-wicking interior foam padding,125.00,HELM-SS-001-SM,Small,,Navy,68.00,125.00
+HELM-SS-001,SS Premium Cricket Helmet,ss-premium-helmet,Helmets,SS,Steel grille helmet with moisture-wicking interior foam padding,125.00,HELM-SS-001-MD,Medium,,Navy,68.00,125.00
+HELM-SS-001,SS Premium Cricket Helmet,ss-premium-helmet,Helmets,SS,Steel grille helmet with moisture-wicking interior foam padding,125.00,HELM-SS-001-LG,Large,,Navy,68.00,125.00
+HELM-SS-001,SS Premium Cricket Helmet,ss-premium-helmet,Helmets,SS,Steel grille helmet with moisture-wicking interior foam padding,125.00,HELM-SS-001-WH,Medium,,White,68.00,125.00
+SHOE-KK-001,Kookaburra KC 2.0 Cricket Shoes,kookaburra-kc-20-shoes,Batting Shoes,Kookaburra,Full spike cricket shoes with reinforced toe and ankle support,159.00,SHOE-KK-001-7,US 7,,White,88.00,159.00
+SHOE-KK-001,Kookaburra KC 2.0 Cricket Shoes,kookaburra-kc-20-shoes,Batting Shoes,Kookaburra,Full spike cricket shoes with reinforced toe and ankle support,159.00,SHOE-KK-001-8,US 8,,White,88.00,159.00
+SHOE-KK-001,Kookaburra KC 2.0 Cricket Shoes,kookaburra-kc-20-shoes,Batting Shoes,Kookaburra,Full spike cricket shoes with reinforced toe and ankle support,159.00,SHOE-KK-001-9,US 9,,White,88.00,159.00
+SHOE-KK-001,Kookaburra KC 2.0 Cricket Shoes,kookaburra-kc-20-shoes,Batting Shoes,Kookaburra,Full spike cricket shoes with reinforced toe and ankle support,159.00,SHOE-KK-001-10,US 10,,White,88.00,159.00
+SHOE-KK-001,Kookaburra KC 2.0 Cricket Shoes,kookaburra-kc-20-shoes,Batting Shoes,Kookaburra,Full spike cricket shoes with reinforced toe and ankle support,159.00,SHOE-KK-001-11,US 11,,White,88.00,159.00
+SHOE-NB-002,New Balance CK4040 Spikes,nb-ck4040-spikes,Bowling Shoes,New Balance,Bowling-specific cricket shoe with aluminium spike configuration,189.00,SHOE-NB-002-8,US 8,,White/Blue,102.00,189.00
+SHOE-NB-002,New Balance CK4040 Spikes,nb-ck4040-spikes,Bowling Shoes,New Balance,Bowling-specific cricket shoe with aluminium spike configuration,189.00,SHOE-NB-002-9,US 9,,White/Blue,102.00,189.00
+SHOE-NB-002,New Balance CK4040 Spikes,nb-ck4040-spikes,Bowling Shoes,New Balance,Bowling-specific cricket shoe with aluminium spike configuration,189.00,SHOE-NB-002-10,US 10,,White/Blue,102.00,189.00
+SHOE-NB-002,New Balance CK4040 Spikes,nb-ck4040-spikes,Bowling Shoes,New Balance,Bowling-specific cricket shoe with aluminium spike configuration,189.00,SHOE-NB-002-11,US 11,,White/Blue,102.00,189.00
+BAG-KK-001,Kookaburra Pro Players Coffin Bag,kookaburra-pro-coffin-bag,Kit Bags,Kookaburra,Wheeled coffin bag with separate bat compartment and side pockets,199.00,BAG-KK-001-STD,One Size,,Black/Yellow,110.00,199.00
+BAG-GN-002,Gray Nicolls Players Duffle Bag,gn-players-duffle,Duffle Bags,Gray Nicolls,Large-capacity duffle with dual bat sleeves and ventilated shoe pocket,129.00,BAG-GN-002-STD,One Size,,Navy,70.00,129.00
+BAG-SS-003,SS Ton Backpack,ss-ton-backpack,Backpacks,SS,Cricket backpack with padded laptop sleeve and bat holder,79.00,BAG-SS-003-STD,One Size,,Black,42.00,79.00
+GRIP-SS-001,SS Octopus Batting Grip,ss-octopus-grip,Batting Grips,SS,Non-slip octopus pattern grip for better bat control,5.00,GRIP-SS-001-BLK,One Size,,Black,2.00,5.00
+GRIP-SS-001,SS Octopus Batting Grip,ss-octopus-grip,Batting Grips,SS,Non-slip octopus pattern grip for better bat control,5.00,GRIP-SS-001-RED,One Size,,Red,2.00,5.00
+GRIP-SS-001,SS Octopus Batting Grip,ss-octopus-grip,Batting Grips,SS,Non-slip octopus pattern grip for better bat control,5.00,GRIP-SS-001-BLU,One Size,,Blue,2.00,5.00
+STUMP-SG-001,SG Club Cricket Stumps Set,sg-club-stumps,Stumps & Bails,SG,Set of 3 hardwood stumps and 2 bails with steel spikes,45.00,STUMP-SG-001-STD,Standard,,Natural,24.00,45.00
+SHIRT-KK-001,Kookaburra Pro Cricket Shirt,kookaburra-pro-shirt,Cricket Shirts,Kookaburra,Moisture-wicking long-sleeve cricket shirt with UV protection,79.00,SHIRT-KK-001-SM,Small,,White,42.00,79.00
+SHIRT-KK-001,Kookaburra Pro Cricket Shirt,kookaburra-pro-shirt,Cricket Shirts,Kookaburra,Moisture-wicking long-sleeve cricket shirt with UV protection,79.00,SHIRT-KK-001-MD,Medium,,White,42.00,79.00
+SHIRT-KK-001,Kookaburra Pro Cricket Shirt,kookaburra-pro-shirt,Cricket Shirts,Kookaburra,Moisture-wicking long-sleeve cricket shirt with UV protection,79.00,SHIRT-KK-001-LG,Large,,White,42.00,79.00
+SHIRT-KK-001,Kookaburra Pro Cricket Shirt,kookaburra-pro-shirt,Cricket Shirts,Kookaburra,Moisture-wicking long-sleeve cricket shirt with UV protection,79.00,SHIRT-KK-001-XL,X-Large,,White,42.00,79.00
+SHIRT-KK-001,Kookaburra Pro Cricket Shirt,kookaburra-pro-shirt,Cricket Shirts,Kookaburra,Moisture-wicking long-sleeve cricket shirt with UV protection,79.00,SHIRT-KK-001-2XL,2X-Large,,White,42.00,79.00
+TRSR-KK-001,Kookaburra Pro Cricket Trousers,kookaburra-pro-trousers,Cricket Trousers,Kookaburra,Stretchy cricket trousers with reinforced knee panels,69.00,TRSR-KK-001-SM,Small,,White,36.00,69.00
+TRSR-KK-001,Kookaburra Pro Cricket Trousers,kookaburra-pro-trousers,Cricket Trousers,Kookaburra,Stretchy cricket trousers with reinforced knee panels,69.00,TRSR-KK-001-MD,Medium,,White,36.00,69.00
+TRSR-KK-001,Kookaburra Pro Cricket Trousers,kookaburra-pro-trousers,Cricket Trousers,Kookaburra,Stretchy cricket trousers with reinforced knee panels,69.00,TRSR-KK-001-LG,Large,,White,36.00,69.00
+TRSR-KK-001,Kookaburra Pro Cricket Trousers,kookaburra-pro-trousers,Cricket Trousers,Kookaburra,Stretchy cricket trousers with reinforced knee panels,69.00,TRSR-KK-001-XL,X-Large,,White,36.00,69.00

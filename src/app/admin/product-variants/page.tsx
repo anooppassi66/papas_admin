@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import AdminHeader from "@/components/admin/AdminHeader";
 import Modal from "@/components/admin/Modal";
 import StatusBadge from "@/components/admin/StatusBadge";
+import SearchableSelect from "@/components/admin/SearchableSelect";
 import { api } from "@/lib/api";
 
 interface Variant {
@@ -111,11 +112,13 @@ export default function VariantsPage() {
             {error && <div className="p-3 bg-red-50 text-red-600 rounded-lg text-sm">{error}</div>}
             <div>
               <label className="block text-xs font-medium text-gray-500 mb-1">Product *</label>
-              <select required value={form.product_id} onChange={e => setForm({ ...form, product_id: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#f69a39]">
-                <option value="">Select product</option>
-                {products.map(p => <option key={p.id} value={p.id}>{p.name} ({p.product_code})</option>)}
-              </select>
+              <SearchableSelect
+                required
+                value={form.product_id}
+                onChange={v => setForm({ ...form, product_id: v })}
+                placeholder="Select product"
+                options={[{ value: "", label: "— Select product —" }, ...products.map(p => ({ value: String(p.id), label: `${p.name} (${p.product_code})` }))]}
+              />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>

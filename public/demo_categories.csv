@@ -1,0 +1,37 @@
+name,slug,parent_name
+Cricket Bats,cricket-bats,
+English Willow Bats,english-willow-bats,Cricket Bats
+Kashmir Willow Bats,kashmir-willow-bats,Cricket Bats
+Junior Cricket Bats,junior-cricket-bats,Cricket Bats
+Cricket Balls,cricket-balls,
+Red Cricket Balls,red-cricket-balls,Cricket Balls
+White Cricket Balls,white-cricket-balls,Cricket Balls
+Pink Cricket Balls,pink-cricket-balls,Cricket Balls
+Tennis Cricket Balls,tennis-cricket-balls,Cricket Balls
+Protective Gear,protective-gear,
+Batting Pads,batting-pads,Protective Gear
+Batting Gloves,batting-gloves,Protective Gear
+Helmets,helmets,Protective Gear
+Thigh Guards,thigh-guards,Protective Gear
+Arm Guards,arm-guards,Protective Gear
+Abdomen Guards,abdomen-guards,Protective Gear
+Cricket Clothing,cricket-clothing,
+Cricket Shirts,cricket-shirts,Cricket Clothing
+Cricket Trousers,cricket-trousers,Cricket Clothing
+Cricket Caps & Hats,cricket-caps-hats,Cricket Clothing
+Cricket Socks,cricket-socks,Cricket Clothing
+Cricket Shoes,cricket-shoes,
+Batting Shoes,batting-shoes,Cricket Shoes
+Bowling Shoes,bowling-shoes,Cricket Shoes
+Cricket Bags,cricket-bags,
+Kit Bags,kit-bags,Cricket Bags
+Duffle Bags,duffle-bags,Cricket Bags
+Backpacks,backpacks,Cricket Bags
+Cricket Accessories,cricket-accessories,
+Batting Grips,batting-grips,Cricket Accessories
+Bat Tape & Toe Guards,bat-tape-toe-guards,Cricket Accessories
+Sight Screens,sight-screens,Cricket Accessories
+Stumps & Bails,stumps-bails,Cricket Accessories
+Cricket Nets,cricket-nets,Cricket Accessories
+Bowling Machines,bowling-machines,
+Training Equipment,training-equipment,

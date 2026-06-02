@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import AdminHeader from "@/components/admin/AdminHeader";
 import Modal from "@/components/admin/Modal";
+import SearchableSelect from "@/components/admin/SearchableSelect";
 import { api } from "@/lib/api";
 
 interface InventoryRow {
@@ -99,19 +100,23 @@ export default function InventoryPage() {
             {error && <div className="p-3 bg-red-50 text-red-600 rounded-lg text-sm">{error}</div>}
             <div>
               <label className="block text-xs font-medium text-gray-500 mb-1">Store *</label>
-              <select required value={form.store_id} onChange={e => setForm({ ...form, store_id: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#f69a39]">
-                <option value="">Select store</option>
-                {stores.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
-              </select>
+              <SearchableSelect
+                required
+                value={form.store_id}
+                onChange={v => setForm({ ...form, store_id: v })}
+                placeholder="Select store"
+                options={[{ value: "", label: "— Select store —" }, ...stores.map(s => ({ value: String(s.id), label: s.name }))]}
+              />
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-500 mb-1">Product Variation *</label>
-              <select required value={form.product_variation_id} onChange={e => setForm({ ...form, product_variation_id: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#f69a39]">
-                <option value="">Select variant</option>
-                {variants.map(v => <option key={v.id} value={v.id}>{v.product_name} — {v.size} {v.color} ({v.sku})</option>)}
-              </select>
+              <SearchableSelect
+                required
+                value={form.product_variation_id}
+                onChange={v => setForm({ ...form, product_variation_id: v })}
+                placeholder="Select variant"
+                options={[{ value: "", label: "— Select variant —" }, ...variants.map(v => ({ value: String(v.id), label: `${v.product_name} — ${v.size} ${v.color} (${v.sku})` }))]}
+              />
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-500 mb-1">Quantity *</label>

@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import AdminHeader from "@/components/admin/AdminHeader";
 import Modal from "@/components/admin/Modal";
+import SearchableSelect from "@/components/admin/SearchableSelect";
 import { api } from "@/lib/api";
 
 interface PurchaseLine {
@@ -125,19 +126,23 @@ export default function PurchaseLinesPage() {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Invoice *</label>
-                <select required value={form.invoice_id} onChange={e => setForm({ ...form, invoice_id: e.target.value })}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#f69a39]">
-                  <option value="">Select invoice</option>
-                  {invoices.map(i => <option key={i.id} value={i.id}>{i.invoice_no} (Goods: ${Number(i.goods_total).toFixed(2)})</option>)}
-                </select>
+                <SearchableSelect
+                  required
+                  value={form.invoice_id}
+                  onChange={v => setForm({ ...form, invoice_id: v })}
+                  placeholder="Select invoice"
+                  options={[{ value: "", label: "— Select invoice —" }, ...invoices.map(i => ({ value: String(i.id), label: `${i.invoice_no} (Goods: $${Number(i.goods_total).toFixed(2)})` }))]}
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Product Variation *</label>
-                <select required value={form.product_variant_id} onChange={e => setForm({ ...form, product_variant_id: e.target.value })}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#f69a39]">
-                  <option value="">Select variant</option>
-                  {variants.map(v => <option key={v.id} value={v.id}>{v.product_name} — {v.size} {v.color} ({v.sku})</option>)}
-                </select>
+                <SearchableSelect
+                  required
+                  value={form.product_variant_id}
+                  onChange={v => setForm({ ...form, product_variant_id: v })}
+                  placeholder="Select variant"
+                  options={[{ value: "", label: "— Select variant —" }, ...variants.map(v => ({ value: String(v.id), label: `${v.product_name} — ${v.size} ${v.color} (${v.sku})` }))]}
+                />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -148,11 +153,12 @@ export default function PurchaseLinesPage() {
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Vendor</label>
-                <select value={form.vendor_id} onChange={e => setForm({ ...form, vendor_id: e.target.value })}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#f69a39]">
-                  <option value="">Select vendor</option>
-                  {vendors.map(v => <option key={v.id} value={v.id}>{v.vendor_name}</option>)}
-                </select>
+                <SearchableSelect
+                  value={form.vendor_id}
+                  onChange={v => setForm({ ...form, vendor_id: v })}
+                  placeholder="Select vendor"
+                  options={[{ value: "", label: "— Select vendor —" }, ...vendors.map(v => ({ value: String(v.id), label: v.vendor_name }))]}
+                />
               </div>
             </div>
             <div>

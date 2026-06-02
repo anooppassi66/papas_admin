@@ -15,6 +15,9 @@ const NAV = [
   { label: "Purchase Lines", href: "/admin/purchase-lines",  icon: "fa-solid fa-clipboard-list" },
   { label: "Inventory",      href: "/admin/inventory",       icon: "fa-solid fa-warehouse" },
   { label: "Services",       href: "/admin/services",        icon: "fa-solid fa-screwdriver-wrench" },
+  { label: "Svc Categories", href: "/admin/service-categories", icon: "fa-solid fa-tags" },
+  { label: "Svc Offerings",  href: "/admin/service-offerings",  icon: "fa-solid fa-concierge-bell" },
+  { label: "Addons",         href: "/admin/addons",          icon: "fa-solid fa-puzzle-piece" },
   { label: "P&L Statement",  href: "/admin/profit-loss",     icon: "fa-solid fa-chart-line" },
   { label: "Settings",       href: "/admin/settings",        icon: "fa-solid fa-gear" },
   { label: "Mega Menu",      href: "/admin/mega-menu",       icon: "fa-solid fa-bars" },
@@ -26,6 +29,8 @@ const NAV = [
   { label: "Newsletter",     href: "/admin/newsletter",      icon: "fa-solid fa-envelope" },
   { label: "Gift Cards",     href: "/admin/gift-cards",      icon: "fa-solid fa-gift" },
   { label: "Homepage",       href: "/admin/homepage",        icon: "fa-solid fa-house" },
+  { label: "POS Sales",      href: "/admin/pos-sales",       icon: "fa-solid fa-cash-register" },
+  { label: "Bulk Upload",    href: "/admin/bulk-upload",     icon: "fa-solid fa-file-arrow-up" },
 ];
 
 export default function AdminSidebar() {

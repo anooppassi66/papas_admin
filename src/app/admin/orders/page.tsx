@@ -35,6 +35,24 @@ interface OrderItem {
   sku: string;
   brand_name: string;
 }
+interface OrderService {
+  id: number;
+  offering_name: string;
+  category_name: string;
+  price: number;
+  status: "pending" | "in_progress" | "completed" | "cancelled";
+}
+interface OrderAddon {
+  id: number;
+  addon_name: string;
+  price: number;
+  packed: boolean;
+}
+interface OrderDetail {
+  items: OrderItem[];
+  services: OrderService[];
+  addons: OrderAddon[];
+}
 
 const STATUS_OPTIONS = [
   { value: "pending",    label: "Pending",    color: "bg-yellow-100 text-yellow-700" },
@@ -56,7 +74,7 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [filterStatus, setFilterStatus] = useState("");
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
-  const [items, setItems] = useState<Record<string, OrderItem[]>>({});
+  const [details, setDetails] = useState<Record<string, OrderDetail>>({});
   const [loadingItems, setLoadingItems] = useState<string | null>(null);
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
 
@@ -72,13 +90,35 @@ export default function OrdersPage() {
   async function toggleExpand(order_no: string) {
     if (expandedOrder === order_no) { setExpandedOrder(null); return; }
     setExpandedOrder(order_no);
-    if (items[order_no]) return;
+    if (details[order_no]) return;
     setLoadingItems(order_no);
     try {
-      const data = await api.get(`/orders/${order_no}`) as OrderItem[];
-      setItems(prev => ({ ...prev, [order_no]: data }));
+      const data = await api.get(`/orders/${order_no}`) as OrderDetail;
+      setDetails(prev => ({ ...prev, [order_no]: data }));
     } catch (_) {}
     finally { setLoadingItems(null); }
+  }
+
+  async function updateServiceStatus(order_no: string, svcId: number, status: string) {
+    await api.patch(`/orders/services/${svcId}/status`, { status }).catch(() => {});
+    setDetails(prev => ({
+      ...prev,
+      [order_no]: {
+        ...prev[order_no],
+        services: prev[order_no].services.map(s => s.id === svcId ? { ...s, status: status as OrderService["status"] } : s),
+      },
+    }));
+  }
+
+  async function toggleAddonPacked(order_no: string, addonId: number) {
+    await api.patch(`/orders/addons/${addonId}/pack`, {}).catch(() => {});
+    setDetails(prev => ({
+      ...prev,
+      [order_no]: {
+        ...prev[order_no],
+        addons: prev[order_no].addons.map(a => a.id === addonId ? { ...a, packed: !a.packed } : a),
+      },
+    }));
   }
 
   async function updateStatus(order_no: string, order_status: string) {
@@ -135,7 +175,10 @@ export default function OrdersPage() {
             const sm = statusMeta(order.order_status);
             const isExpanded = expandedOrder === order.order_no;
             const isUpdating = updatingStatus === order.order_no;
-            const orderItems = items[order.order_no] || [];
+            const detail = details[order.order_no];
+            const orderItems = detail?.items || [];
+            const orderServices = detail?.services || [];
+            const orderAddons = detail?.addons || [];
 
             return (
               <div key={order.order_no} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -207,42 +250,96 @@ export default function OrdersPage() {
                     </div>
 
                     {loadingItems === order.order_no ? (
-                      <div className="text-xs text-gray-400 py-4 text-center">Loading items…</div>
+                      <div className="text-xs text-gray-400 py-4 text-center">Loading…</div>
                     ) : (
-                      <div className="space-y-3">
-                        {orderItems.map(item => (
-                          <div key={item.id} className="flex items-center gap-3 bg-white rounded-lg px-3 py-2.5 border border-gray-100">
-                            <div className="w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
-                              {item.product_image ? (
-                                <Image
-                                  src={item.product_image.startsWith("/uploads") ? `${UPLOADS}${item.product_image}` : item.product_image}
-                                  alt={item.product_name}
-                                  width={48} height={48}
-                                  className="w-full h-full object-cover"
-                                />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center">
-                                  <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                  </svg>
-                                </div>
-                              )}
+                      <div className="space-y-4">
+                        {/* Products */}
+                        <div className="space-y-2">
+                          {orderItems.map(item => (
+                            <div key={item.id} className="flex items-center gap-3 bg-white rounded-lg px-3 py-2.5 border border-gray-100">
+                              <div className="w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+                                {item.product_image ? (
+                                  <Image src={item.product_image.startsWith("/uploads") ? `${UPLOADS}${item.product_image}` : item.product_image}
+                                    alt={item.product_name} width={48} height={48} className="w-full h-full object-cover" />
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center">
+                                    <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                  </div>
+                                )}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-xs font-medium text-[#1e1e21] line-clamp-1">{item.product_name}</p>
+                                <p className="text-[11px] text-gray-400 mt-0.5">
+                                  {item.brand_name && <span>{item.brand_name} · </span>}
+                                  {item.size && <span>Size: {item.size} · </span>}
+                                  {item.color && <span>Color: {item.color} · </span>}
+                                  {item.sku && <span className="font-mono">{item.sku}</span>}
+                                </p>
+                              </div>
+                              <div className="text-right flex-shrink-0">
+                                <div className="text-xs font-semibold text-[#1e1e21]">${Number(item.sell_price).toFixed(2)}</div>
+                                <div className="text-[11px] text-gray-400">Qty: {item.quantity}</div>
+                              </div>
                             </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-xs font-medium text-[#1e1e21] line-clamp-1">{item.product_name}</p>
-                              <p className="text-[11px] text-gray-400 mt-0.5">
-                                {item.brand_name && <span>{item.brand_name} · </span>}
-                                {item.size && <span>Size: {item.size} · </span>}
-                                {item.color && <span>Color: {item.color} · </span>}
-                                {item.sku && <span className="font-mono">{item.sku}</span>}
-                              </p>
-                            </div>
-                            <div className="text-right flex-shrink-0">
-                              <div className="text-xs font-semibold text-[#1e1e21]">${Number(item.sell_price).toFixed(2)}</div>
-                              <div className="text-[11px] text-gray-400">Qty: {item.quantity}</div>
+                          ))}
+                        </div>
+
+                        {/* Service bookings */}
+                        {orderServices.length > 0 && (
+                          <div>
+                            <p className="text-[10px] font-semibold text-blue-500 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                              <i className="fa-solid fa-screwdriver-wrench" /> Service Bookings
+                            </p>
+                            <div className="space-y-2">
+                              {orderServices.map(svc => {
+                                const SVC_STATUS = [
+                                  { value: "pending",     label: "Pending",     color: "bg-yellow-100 text-yellow-700" },
+                                  { value: "in_progress", label: "In Progress", color: "bg-blue-100 text-blue-700" },
+                                  { value: "completed",   label: "Completed",   color: "bg-green-100 text-green-700" },
+                                  { value: "cancelled",   label: "Cancelled",   color: "bg-red-100 text-red-600" },
+                                ];
+                                return (
+                                  <div key={svc.id} className="flex items-center gap-3 bg-blue-50 rounded-lg px-3 py-2.5 border border-blue-100">
+                                    <div className="flex-1 min-w-0">
+                                      <p className="text-xs font-medium text-[#1e1e21]">{svc.offering_name}</p>
+                                      <p className="text-[11px] text-gray-400">{svc.category_name} · ${Number(svc.price).toFixed(2)}</p>
+                                    </div>
+                                    <select value={svc.status}
+                                      onChange={e => updateServiceStatus(order.order_no, svc.id, e.target.value)}
+                                      className="border border-blue-200 rounded px-2 py-1 text-[11px] bg-white focus:outline-none focus:border-blue-400">
+                                      {SVC_STATUS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
+                                    </select>
+                                  </div>
+                                );
+                              })}
                             </div>
                           </div>
-                        ))}
+                        )}
+
+                        {/* Addons */}
+                        {orderAddons.length > 0 && (
+                          <div>
+                            <p className="text-[10px] font-semibold text-green-500 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                              <i className="fa-solid fa-box" /> Add-ons (pack with shipment)
+                            </p>
+                            <div className="space-y-2">
+                              {orderAddons.map(addon => (
+                                <div key={addon.id} className="flex items-center gap-3 bg-green-50 rounded-lg px-3 py-2.5 border border-green-100">
+                                  <div className="flex-1 min-w-0">
+                                    <p className="text-xs font-medium text-[#1e1e21]">{addon.addon_name}</p>
+                                    <p className="text-[11px] text-gray-400">${Number(addon.price).toFixed(2)}</p>
+                                  </div>
+                                  <button onClick={() => toggleAddonPacked(order.order_no, addon.id)}
+                                    className={`text-[11px] font-semibold px-3 py-1.5 rounded-lg border transition-colors ${addon.packed ? "bg-green-600 text-white border-green-600" : "bg-white text-gray-500 border-gray-200 hover:border-green-400"}`}>
+                                    {addon.packed ? "✓ Packed" : "Mark Packed"}
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

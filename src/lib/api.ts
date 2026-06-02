@@ -15,6 +15,11 @@ async function request(path: string, options: RequestInit = {}) {
     ...(options.headers as Record<string, string> || {}),
   };
   const res = await fetch(`${BASE}${path}`, { ...options, headers });
+  if (res.status === 401 && !path.startsWith("/auth/")) {
+    localStorage.removeItem("admin_token");
+    window.location.href = "/admin/login?expired=1";
+    throw new Error("Session expired");
+  }
   if (!res.ok) {
     const err = await res.json().catch(() => ({ error: res.statusText }));
     throw new Error(err.error || 'Request failed');
