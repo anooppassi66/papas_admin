@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import AdminHeader from "@/components/admin/AdminHeader";
+import ShipmentTracker from "@/components/admin/ShipmentTracker";
 import { api, UPLOADS } from "@/lib/api";
 
 interface Order {
@@ -342,6 +343,9 @@ export default function OrdersPage() {
                         )}
                       </div>
                     )}
+
+                    {/* Easyship tracking */}
+                    <ShipmentTracker orderNo={order.order_no} />
                   </div>
                 )}
               </div>

@@ -12,6 +12,8 @@ interface UploadResult {
   updated?: number;
   variants_inserted?: number;
   variants_updated?: number;
+  services_linked?: number;
+  addons_linked?: number;
   errors: string[];
 }
 
@@ -126,6 +128,8 @@ export default function BulkUploadPage() {
                   {result.updated !== undefined && <span>Updated: <strong>{result.updated}</strong></span>}
                   {result.variants_inserted !== undefined && <span>Variants added: <strong>{result.variants_inserted}</strong></span>}
                   {result.variants_updated !== undefined && <span>Variants updated: <strong>{result.variants_updated}</strong></span>}
+                  {result.services_linked !== undefined && result.services_linked > 0 && <span>Services linked: <strong>{result.services_linked}</strong></span>}
+                  {result.addons_linked !== undefined && result.addons_linked > 0 && <span>Addons linked: <strong>{result.addons_linked}</strong></span>}
                   <span>Errors: <strong className={result.errors.length ? "text-red-600" : ""}>{result.errors.length}</strong></span>
                 </div>
               </div>
@@ -153,18 +157,24 @@ export default function BulkUploadPage() {
             )}
             {tab === "products" && (
               <div className="text-xs text-gray-600 space-y-1.5">
-                <p><strong>product_code</strong> — Unique product code (used to match for updates)</p>
+                <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-400 pt-1">Product fields</p>
+                <p><strong>product_code</strong> — Unique code (used to match for updates)</p>
                 <p><strong>name</strong> — Product name (required)</p>
                 <p><strong>slug</strong> — URL slug (auto-generated if blank)</p>
                 <p><strong>category_name</strong> — Exact category name</p>
                 <p><strong>brand_name</strong> — Exact brand name</p>
                 <p><strong>description</strong> — Product description</p>
                 <p><strong>sell_price</strong> — Default selling price</p>
+                <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-400 pt-2">Variant fields</p>
                 <p><strong>sku</strong> — Variant SKU (creates/updates a variant if provided)</p>
                 <p><strong>size, color</strong> — Variant attributes</p>
-                <p><strong>actual_price</strong> — Variant cost price</p>
-                <p><strong>selling_price</strong> — Variant selling price</p>
-                <p className="pt-2 text-gray-400">Repeat a product row with different SKUs to add multiple variants.</p>
+                <p><strong>actual_price</strong> — Variant cost/purchase price</p>
+                <p><strong>selling_price</strong> — Variant regular selling price</p>
+                <p><strong>offer_price</strong> — Discounted price shown on site (leave blank for no discount)</p>
+                <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-400 pt-2">Services &amp; Add-ons</p>
+                <p><strong>service_names</strong> — Pipe-separated service offering names to link <span className="text-gray-400">(e.g. Machine Knocking|Hand Knocking)</span></p>
+                <p><strong>addon_names</strong> — Pipe-separated addon names to link <span className="text-gray-400">(e.g. Extra Grip|Bat Cover)</span></p>
+                <p className="pt-2 text-gray-400">Repeat a product row with different SKUs to add multiple variants. Services &amp; addons are set from the first row per product.</p>
               </div>
             )}
             {tab === "inventory" && (
@@ -189,7 +199,7 @@ export default function BulkUploadPage() {
               <a href="/demo_products.csv" download
                 className={`flex items-center gap-2 px-4 py-2.5 border rounded-lg text-sm transition-colors ${tab === "products" ? "border-[#f69a39] text-[#f69a39] bg-[#fff8f0]" : "border-gray-200 text-gray-500 hover:border-gray-300"}`}>
                 <i className="fa-solid fa-download" />
-                demo_products.csv <span className="ml-auto text-xs text-gray-400">53 rows</span>
+                demo_products.csv <span className="ml-auto text-xs text-gray-400">55 rows</span>
               </a>
               <a href="/demo_inventory.csv" download
                 className={`flex items-center gap-2 px-4 py-2.5 border rounded-lg text-sm transition-colors ${tab === "inventory" ? "border-[#f69a39] text-[#f69a39] bg-[#fff8f0]" : "border-gray-200 text-gray-500 hover:border-gray-300"}`}>
