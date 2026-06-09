@@ -4,10 +4,11 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 
 const NAV = [
-  { label: "New Sale",   href: "/pos/sale",    icon: "fa-solid fa-cash-register" },
-  { label: "Sales",      href: "/pos/sales",   icon: "fa-solid fa-receipt" },
-  { label: "Orders",     href: "/pos/orders",  icon: "fa-solid fa-cart-shopping" },
-  { label: "Barcodes",   href: "/pos/barcode", icon: "fa-solid fa-barcode" },
+  { label: "New Sale",   href: "/pos/sale",     icon: "fa-solid fa-cash-register" },
+  { label: "Sales",      href: "/pos/sales",    icon: "fa-solid fa-receipt" },
+  { label: "Orders",     href: "/pos/orders",   icon: "fa-solid fa-cart-shopping" },
+  { label: "Products",   href: "/pos/products", icon: "fa-solid fa-box" },
+  // { label: "Barcodes",   href: "/pos/barcode",  icon: "fa-solid fa-barcode" },
 ];
 
 export default function PosLayout({ children }: { children: React.ReactNode }) {

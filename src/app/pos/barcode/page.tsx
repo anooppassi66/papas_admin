@@ -9,7 +9,7 @@ function posApi(path: string) {
     .then(async r => { const d = await r.json(); if (!r.ok) throw new Error(d.error); return d; });
 }
 
-interface Variant { sku: string; product_name: string; size: string; color: string; selling_price: number; stock: number; }
+interface Variant { sku: string; product_name: string; size: string; color: string; actual_price: number; selling_price: number; stock: number; }
 
 function BarcodeLabel({ item, copies }: { item: Variant; copies: number }) {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -32,7 +32,8 @@ function BarcodeLabel({ item, copies }: { item: Variant; copies: number }) {
           <p className="text-[9px] font-bold text-gray-700 truncate mb-1">{item.product_name}</p>
           {item.size && <p className="text-[8px] text-gray-500">{item.size}{item.color ? ` · ${item.color}` : ""}</p>}
           <svg ref={i === 0 ? svgRef : undefined} className="w-full" />
-          <p className="text-[8px] text-gray-500 mt-1">${Number(item.selling_price).toFixed(2)}</p>
+          <p className="text-[8px] text-gray-400 line-through">${Number(item.actual_price).toFixed(2)}</p>
+          <p className="text-[9px] font-bold text-gray-800">${Number(item.selling_price).toFixed(2)}</p>
         </div>
       ))}
     </>
@@ -65,7 +66,8 @@ function SingleBarcode({ item }: { item: Variant }) {
       <p className="text-[9px] font-bold text-gray-700 truncate mb-1">{item.product_name}</p>
       {item.size && <p className="text-[8px] text-gray-500">{item.size}{item.color ? ` · ${item.color}` : ""}</p>}
       <svg ref={svgRef} className="w-full" />
-      <p className="text-[8px] text-gray-500 mt-1">${Number(item.selling_price).toFixed(2)}</p>
+      <p className="text-[8px] text-gray-400 line-through">${Number(item.actual_price).toFixed(2)}</p>
+      <p className="text-[9px] font-bold text-gray-800">${Number(item.selling_price).toFixed(2)}</p>
     </div>
   );
 }
@@ -138,7 +140,8 @@ export default function BarcodeePage() {
                   <th className="text-left px-4 py-3">Product</th>
                   <th className="text-left px-4 py-3">SKU</th>
                   <th className="text-left px-4 py-3">Variant</th>
-                  <th className="text-right px-4 py-3">Price</th>
+                  <th className="text-right px-4 py-3">Actual Price</th>
+                  <th className="text-right px-4 py-3">Sell Price</th>
                   <th className="text-right px-4 py-3">Stock</th>
                   <th className="text-center px-4 py-3">Copies</th>
                 </tr>
@@ -157,6 +160,7 @@ export default function BarcodeePage() {
                     <td className="px-4 py-3 font-medium text-[#1e1e21] text-[13px]">{v.product_name}</td>
                     <td className="px-4 py-3 font-mono text-[12px] text-gray-600">{v.sku}</td>
                     <td className="px-4 py-3 text-[12px] text-gray-500">{v.size}{v.color ? ` · ${v.color}` : ""}</td>
+                    <td className="px-4 py-3 text-right text-[12px] text-gray-400 line-through">${Number(v.actual_price).toFixed(2)}</td>
                     <td className="px-4 py-3 text-right text-[13px] font-semibold text-[#f69a39]">${Number(v.selling_price).toFixed(2)}</td>
                     <td className="px-4 py-3 text-right text-[12px] text-gray-500">{v.stock}</td>
                     <td className="px-4 py-3 text-center">
