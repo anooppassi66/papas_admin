@@ -7,6 +7,7 @@ interface Return {
   id: number; order_no: string; customer_name: string; customer_email: string;
   reason: string; message: string | null; status: "pending" | "approved" | "rejected" | "completed";
   admin_note: string | null; item_count: number; order_total: number; created_at: string;
+  stripe_refund_id: string | null;
 }
 
 const STATUS_OPTIONS = [
@@ -22,6 +23,7 @@ export default function ReturnsPage() {
   const [returns, setReturns] = useState<Return[]>([]);
   const [filter, setFilter] = useState("");
   const [updating, setUpdating] = useState<number | null>(null);
+  const [refundError, setRefundError] = useState<Record<number, string>>({});
   const [noteInputs, setNoteInputs] = useState<Record<number, string>>({});
   const [expanded, setExpanded] = useState<number | null>(null);
 
@@ -35,7 +37,13 @@ export default function ReturnsPage() {
 
   async function updateStatus(id: number, status: string) {
     setUpdating(id);
-    await api.patch(`/returns/${id}/status`, { status, admin_note: noteInputs[id] || undefined });
+    setRefundError(prev => ({ ...prev, [id]: "" }));
+    try {
+      const res = await api.patch(`/returns/${id}/status`, { status, admin_note: noteInputs[id] || undefined }) as { refund_error?: string };
+      if (res?.refund_error) {
+        setRefundError(prev => ({ ...prev, [id]: `Refund failed: ${res.refund_error}` }));
+      }
+    } catch { /* ignore */ }
     await load();
     setUpdating(null);
   }
@@ -93,12 +101,18 @@ export default function ReturnsPage() {
                   </div>
 
                   <div className="flex items-center gap-2 flex-shrink-0">
+                    {/* Stripe refund badge */}
+                    {ret.stripe_refund_id && (
+                      <span className="px-2 py-1 bg-purple-50 border border-purple-200 text-purple-700 text-[10px] font-semibold rounded-lg flex items-center gap-1">
+                        <i className="fa-brands fa-stripe text-[#635bff]" /> Refunded
+                      </span>
+                    )}
                     {/* Quick status buttons for pending */}
                     {ret.status === "pending" && (
                       <>
                         <button onClick={() => updateStatus(ret.id, "approved")} disabled={updating === ret.id}
                           className="px-3 py-1.5 bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold rounded-lg hover:bg-blue-100 transition-colors disabled:opacity-50">
-                          Approve
+                          {updating === ret.id ? "Processing…" : "Approve & Refund"}
                         </button>
                         <button onClick={() => updateStatus(ret.id, "rejected")} disabled={updating === ret.id}
                           className="px-3 py-1.5 bg-red-50 border border-red-200 text-red-600 text-xs font-semibold rounded-lg hover:bg-red-100 transition-colors disabled:opacity-50">
@@ -124,6 +138,17 @@ export default function ReturnsPage() {
                 {/* Expanded — admin note + status change */}
                 {isExpanded && (
                   <div className="border-t border-gray-100 bg-gray-50 px-5 py-4 space-y-3">
+                    {ret.stripe_refund_id && (
+                      <div className="flex items-center gap-2 p-2 bg-purple-50 border border-purple-100 rounded text-xs text-purple-700">
+                        <i className="fa-brands fa-stripe text-[#635bff]" />
+                        <span>Stripe refund issued · <span className="font-mono">{ret.stripe_refund_id}</span></span>
+                      </div>
+                    )}
+                    {refundError[ret.id] && (
+                      <div className="p-2 bg-red-50 border border-red-200 rounded text-xs text-red-600">
+                        <i className="fa-solid fa-triangle-exclamation mr-1" />{refundError[ret.id]}
+                      </div>
+                    )}
                     {ret.admin_note && (
                       <div className="text-xs text-gray-500">
                         <span className="font-semibold text-gray-600">Admin note: </span>{ret.admin_note}
