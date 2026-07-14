@@ -8,6 +8,7 @@ const NAV = [
   { label: "Sales",      href: "/pos/sales",    icon: "fa-solid fa-receipt" },
   { label: "Orders",     href: "/pos/orders",   icon: "fa-solid fa-cart-shopping" },
   { label: "Products",   href: "/pos/products", icon: "fa-solid fa-box" },
+  { label: "Kiosk Mode", href: "/pos/kiosk",    icon: "fa-solid fa-display" },
   // { label: "Barcodes",   href: "/pos/barcode",  icon: "fa-solid fa-barcode" },
 ];
 
@@ -27,7 +28,7 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
   }, [pathname, router]);
 
   if (!ready) return null;
-  if (pathname === "/pos/login") return <>{children}</>;
+  if (pathname === "/pos/login" || pathname.startsWith("/pos/kiosk")) return <>{children}</>;
 
   function logout() {
     localStorage.removeItem("store_token");
