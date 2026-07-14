@@ -25,8 +25,8 @@ function ProductModal({ product, onClose, onAdd }: { product: Product; onClose: 
   const [added, setAdded] = useState(false);
 
   const inStockVariants = product.variants.filter(v => v.stock > 0);
-  const sizes = [...new Set(product.variants.filter(v => v.stock > 0).map(v => v.size).filter(Boolean))];
-  const colors = [...new Set(product.variants.filter(v => v.stock > 0).map(v => v.color).filter(Boolean))];
+  const sizes = Array.from(new Set(product.variants.filter(v => v.stock > 0).map(v => v.size).filter(Boolean)));
+  const colors = Array.from(new Set(product.variants.filter(v => v.stock > 0).map(v => v.color).filter(Boolean)));
 
   const [selSize, setSelSize] = useState(sizes[0] || "");
   const [selColor, setSelColor] = useState(colors[0] || "");
@@ -272,7 +272,7 @@ export default function KioskPage() {
     );
   }
 
-  const categories = ["All", ...Array.from(new Set(products.map(p => p.category).filter(Boolean)))];
+  const categories = ["All", ...Array.from(new Set<string>(products.map(p => p.category).filter((c): c is string => Boolean(c))))];
 
   const filtered = products.filter(p => {
     const q = search.toLowerCase();
